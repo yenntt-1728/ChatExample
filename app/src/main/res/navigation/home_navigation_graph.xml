@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment android:name="com.example.chatexample.ui.home.HomeFragment"
+        android:id="@+id/homeFragment"
+        android:label="HomeFragment">
+
+        <action android:id="@+id/openLogin"
+            app:destination="@id/loginFragment"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+
+        <action android:id="@+id/openForward"
+            app:destination="@id/forwardFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.chatexample.ui.login.LoginFragment">
+
+        <action android:id="@+id/openRegister"
+            app:destination="@id/registerFragment" />
+        <action android:id="@+id/openForward"
+            app:destination="@id/forwardFragment" />
+    </fragment>
+
+    <fragment android:id="@+id/registerFragment"
+        android:name="com.example.chatexample.ui.register.RegisterFragment">
+
+        <action android:id="@+id/openForward"
+            app:destination="@id/forwardFragment" />
+    </fragment>
+
+    <fragment android:id="@+id/forwardFragment"
+        android:name="com.example.chatexample.ui.foward.ForwardFragment">
+
+        <action android:id="@+id/openMainChat"
+            app:destination="@id/manChatActivity"/>
+    </fragment>
+
+    <activity android:id="@+id/manChatActivity"
+        android:name="com.example.chatexample.MainChatActivity"
+        android:label="MainChatActivity"/>
+</navigation>

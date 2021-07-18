@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_chat_nav_graph"
+    app:startDestination="@id/chatFragment">
+
+    <fragment android:id="@+id/chatFragment"
+        android:name="com.example.chatexample.ui.chat.ChatFragment"/>
+
+    <fragment android:id="@+id/userFragment"
+        android:name="com.example.chatexample.ui.user.UserFragment"/>
+
+    <fragment android:id="@+id/settingFragment"
+        android:name="com.example.chatexample.setting.SettingFragment">
+
+        <action android:id="@+id/openEditProfile"
+            app:destination="@id/editProfileFragment"/>
+
+    </fragment>
+
+    <fragment android:id="@+id/editProfileFragment"
+        android:name="com.example.chatexample.setting.profile.EditProfileFragment"/>
+
+</navigation>

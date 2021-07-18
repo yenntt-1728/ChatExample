@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/chatFragment"
+        android:title="Chats"
+        android:icon="@drawable/ic_chats" />
+
+    <item
+        android:id="@+id/callFragment"
+        android:title="Calls"
+        android:icon="@drawable/ic_calls" />
+
+    <item
+        android:id="@+id/userFragment"
+        android:title="Users"
+        android:icon="@drawable/ic_users"/>
+
+    <item
+        android:icon="@drawable/ic_groups"
+        android:title="Groups"
+        android:id="@+id/groupFragment"/>
+
+    <item
+        android:icon="@drawable/ic_more"
+        android:title="Mores"
+        android:id="@+id/settingFragment"/>
+
+</menu>
