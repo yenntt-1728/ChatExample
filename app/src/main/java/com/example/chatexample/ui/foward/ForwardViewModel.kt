@@ -10,6 +10,6 @@ class ForwardViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     fun logout() {
-        prefsHelper.remove("IS_LOGIN")
+        prefsHelper.clear()
     }
 }

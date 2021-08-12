@@ -1,5 +1,7 @@
 package com.example.chatexample.ui.user
 
+import com.example.chatexample.data.User
+
 interface UserListener {
-    fun onItemUserClick()
+    fun onItemUserClick(item : User)
 }

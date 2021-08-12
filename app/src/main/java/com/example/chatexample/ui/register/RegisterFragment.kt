@@ -15,6 +15,7 @@ import com.example.chatexample.MainActivity
 import com.example.chatexample.R
 import com.example.chatexample.data.User
 import com.example.chatexample.databinding.FragmentRegisterBinding
+import com.example.chatexample.ui.utils.isEmail
 import com.example.chatexample.ui.utils.navigateWithAnim
 import com.google.firebase.database.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,27 +48,31 @@ class RegisterFragment : Fragment(), RegisterListener, ValueEventListener{
             listener = this@RegisterFragment
         }
         registerBinding.viewModel = this.viewModel
-        viewModel.registerSuccess.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                reference?.push()
-                reference?.child(listUser?.plus(1).toString())?.setValue(User("", registerBinding.username.text.toString()))
-                viewModel.setUserRegister()
-                findNavController().navigateWithAnim(RegisterFragmentDirections.openForward())
-            } else {
-                dialog?.apply {
-                    setMessage("Email or Password Invalidate \nPlease change")
-                    setPositiveButton("OK") { dialog, _->
-                        dialog.dismiss()
-                    }
-                    show()
-                }
-            }
-        })
         reference?.addValueEventListener(this)
     }
 
     override fun registerUser() {
-        viewModel.registerUser((activity as MainActivity).auth)
+        if (viewModel.email.isEmail()) {
+            val user = User(
+                "",
+                password = viewModel.password,
+                email = viewModel.email,
+                username = registerBinding.username.text.toString(),
+                keyId = listUser?.plus(1).toString()
+            )
+            reference?.push()
+            reference?.child(listUser?.plus(1).toString())?.setValue(user)
+//            viewModel.setUserRegister(user)
+            findNavController().popBackStack()
+        } else {
+            dialog?.apply {
+                setMessage("Email or Password Invalidate \nPlease change")
+                setPositiveButton("OK") { dialog, _->
+                    dialog.dismiss()
+                }
+                show()
+            }
+        }
     }
 
     override fun onCancelled(error: DatabaseError) {

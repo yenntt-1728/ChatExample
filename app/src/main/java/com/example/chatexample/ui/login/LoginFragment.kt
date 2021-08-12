@@ -12,17 +12,20 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.chatexample.MainActivity
 import com.example.chatexample.R
+import com.example.chatexample.data.User
 import com.example.chatexample.databinding.FragmentLoginBinding
 import com.example.chatexample.ui.utils.navigateWithAnim
 import com.google.firebase.database.*
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class LoginFragment : Fragment(), LoginListener, ValueEventListener {
     private lateinit var loginBinding : FragmentLoginBinding
     private val viewModel : LoginViewModel by viewModels()
     private var dialog : AlertDialog.Builder?  = null
-    private var reference : Query? = null
+    private var reference : DatabaseReference? = null
+    private lateinit var listUser : MutableList<User>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +47,6 @@ class LoginFragment : Fragment(), LoginListener, ValueEventListener {
         dialog = AlertDialog.Builder(context)
         viewModel.loginSuccessfully.observe(viewLifecycleOwner, Observer {
             if (it) {
-                viewModel.setUserLogin()
                 findNavController().navigateWithAnim(LoginFragmentDirections.openForward())
             } else {
                 dialog?.apply {
@@ -63,7 +65,7 @@ class LoginFragment : Fragment(), LoginListener, ValueEventListener {
     }
 
     override fun loginUser() {
-        viewModel.loginUser((activity as MainActivity).auth)
+        viewModel.loginUser(listUser)
     }
 
     override fun onCancelled(error: DatabaseError) {
@@ -71,6 +73,10 @@ class LoginFragment : Fragment(), LoginListener, ValueEventListener {
     }
 
     override fun onDataChange(snapshot: DataSnapshot) {
-        TODO("Not yet implemented")
+        listUser = mutableListOf()
+        snapshot.children.forEach {
+            val user = it.getValue(User::class.java)
+            user?.let { it1 -> listUser.add(it1) }
+        }
     }
 }

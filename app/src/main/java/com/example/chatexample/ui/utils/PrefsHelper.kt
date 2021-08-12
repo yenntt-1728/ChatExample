@@ -1,11 +1,16 @@
 package com.example.chatexample.ui.utils
 
 import android.content.Context
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class PrefsHelper @Inject constructor(@ApplicationContext context: Context) {
     private val sharedPreferences = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
+    private val moshi by lazy {
+        Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    }
 
     fun set(key: String, value: String) =
         sharedPreferences.edit().apply { putString(key, value) }.apply()
@@ -28,6 +33,27 @@ class PrefsHelper @Inject constructor(@ApplicationContext context: Context) {
     fun get(key: String, defValue: Boolean) = sharedPreferences.getBoolean(key, defValue)
 
     fun contains(key: String) = sharedPreferences.contains(key)
+
+    fun <T> set(key: String, t: T, clz: Class<T>) {
+        sharedPreferences.edit().apply {
+            val v = moshi.adapter(clz).toJson(t)
+            putString(key, v)
+        }.apply()
+    }
+
+    fun <T> get(key: String, clz: Class<T>) : T? {
+        return try {
+            var t: T? = null
+            sharedPreferences.getString(key, "").takeIf { it.isNullOrBlank().not() }?.apply {
+                t = moshi.adapter(clz).fromJson(this)
+            }
+            t
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            null
+        }
+    }
+
 
     fun clear() {
         sharedPreferences.apply {

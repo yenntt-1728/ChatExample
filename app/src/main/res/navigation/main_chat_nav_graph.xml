@@ -5,10 +5,18 @@
     app:startDestination="@id/chatFragment">
 
     <fragment android:id="@+id/chatFragment"
-        android:name="com.example.chatexample.ui.chat.ChatFragment"/>
+        android:name="com.example.chatexample.ui.chat.ChatFragment">
+
+        <action android:id="@+id/openChatDetail"
+            app:destination="@+id/chatDetailFragment"/>
+    </fragment>
 
     <fragment android:id="@+id/userFragment"
-        android:name="com.example.chatexample.ui.user.UserFragment"/>
+        android:name="com.example.chatexample.ui.user.UserFragment">
+
+        <action android:id="@+id/openChatDetail"
+            app:destination="@+id/chatDetailFragment"/>
+    </fragment>
 
     <fragment android:id="@+id/settingFragment"
         android:name="com.example.chatexample.setting.SettingFragment">
@@ -20,5 +28,12 @@
 
     <fragment android:id="@+id/editProfileFragment"
         android:name="com.example.chatexample.setting.profile.EditProfileFragment"/>
+
+    <fragment android:id="@+id/chatDetailFragment"
+        android:name="com.example.chatexample.ui.chat_detail.ChatDetailFragment">
+
+        <argument android:name="user"
+            app:argType="com.example.chatexample.data.User"/>
+    </fragment>
 
 </navigation>

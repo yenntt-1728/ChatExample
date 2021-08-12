@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.chatexample.R
+import com.example.chatexample.data.User
 import com.example.chatexample.databinding.FragmentEditProfileBinding
 import com.google.firebase.database.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class EditProfileFragment : Fragment(), EditProfileListener, ValueEventListener {
     private lateinit var editProfileBinding: FragmentEditProfileBinding
     private val viewModel : EditProfileViewModel by viewModels()
-    private var reference: Query? = null
+    private var reference: DatabaseReference? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +42,7 @@ class EditProfileFragment : Fragment(), EditProfileListener, ValueEventListener 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         editProfileBinding.listener = this
+        editProfileBinding.viewModel = this.viewModel
         reference = FirebaseDatabase.getInstance().getReference("user")
         reference?.addValueEventListener(this)
     }
@@ -54,6 +56,18 @@ class EditProfileFragment : Fragment(), EditProfileListener, ValueEventListener 
                 .setScaleType(CropImageView.ScaleType.CENTER)
                 .start(this, this@EditProfileFragment)
         }
+    }
+
+    override fun saveInfo() {
+        val user = User(
+            avatar = viewModel.avatar.value,
+            username = viewModel.username,
+            password = viewModel.password,
+            email = viewModel.email,
+            keyId = viewModel.user?.keyId
+        )
+        viewModel.saveInfo(user)
+        reference?.child(viewModel.user?.keyId.toString())?.setValue(user)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
