@@ -34,6 +34,8 @@ class MainChatActivity : AppCompatActivity(), MainConfig {
             R.id.chatFragment -> "Chats"
             R.id.userFragment -> "Users"
             R.id.settingFragment -> "Mores"
+            R.id.groupChatFragment -> "Group"
+            R.id.listCallFragment -> "Call"
             else -> "Calls"
         }
     }

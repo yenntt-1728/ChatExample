@@ -10,5 +10,7 @@ class User (
 //    val time: Long? = 0,
     var email: String? = "",
     var password: String? = "",
-    var keyId: String? = ""
+    var keyId: String? = "",
+    var keyIdGroup: String? = "",
+    var isSelected: Boolean? = false
 ) : Serializable

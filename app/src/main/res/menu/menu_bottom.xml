@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_chats" />
 
     <item
-        android:id="@+id/callFragment"
+        android:id="@+id/listCallFragment"
         android:title="Calls"
         android:icon="@drawable/ic_calls" />
 
@@ -19,7 +19,7 @@
     <item
         android:icon="@drawable/ic_groups"
         android:title="Groups"
-        android:id="@+id/groupFragment"/>
+        android:id="@+id/groupChatFragment"/>
 
     <item
         android:icon="@drawable/ic_more"

@@ -1,4 +1,4 @@
-package com.example.chatexample.ui.user
+package com.example.chatexample.ui.create_group
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,26 +8,32 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.chatexample.R
 import com.example.chatexample.adapter.SimpleAdapter
 import com.example.chatexample.adapter.SimpleDataBoundItemListener
 import com.example.chatexample.data.User
+import com.example.chatexample.databinding.FragmentCreateGroupBinding
 import com.example.chatexample.databinding.FragmentUserBinding
+import com.example.chatexample.ui.user.UserFragmentDirections
+import com.example.chatexample.ui.user.UserListener
+import com.example.chatexample.ui.user.UserViewModel
 import com.example.chatexample.ui.utils.navigateWithAnim
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UserFragment : Fragment(), UserListener, SimpleDataBoundItemListener, ValueEventListener {
-    private lateinit var userBinding: FragmentUserBinding
-    private val viewModel : UserViewModel by viewModels()
+class CreateGroupFragment : Fragment(), SimpleDataBoundItemListener,
+    ValueEventListener, CreateGroupListener {
+    private lateinit var userBinding: FragmentCreateGroupBinding
+    private val viewModel : CreateGroupViewModel by viewModels()
     private var reference: DatabaseReference? = null
-    private var referencecall: DatabaseReference? = null
-    private val userAdapter by lazy {
-        SimpleAdapter<User>(layoutInflater, R.layout.item_user).apply {
-            listener = this@UserFragment
+    private var referenceGroupChat: DatabaseReference? = null
+    private val arr = mutableListOf<User>()
+    private val args: CreateGroupFragmentArgs by navArgs()
+    private val createGroupAdapter by lazy {
+        SimpleAdapter<User>(layoutInflater, R.layout.item_create_group).apply {
+            listener = this@CreateGroupFragment
         }
     }
 
@@ -38,7 +44,7 @@ class UserFragment : Fragment(), UserListener, SimpleDataBoundItemListener, Valu
     ): View? {
         userBinding = DataBindingUtil.inflate(
             LayoutInflater.from(requireActivity()),
-            R.layout.fragment_user,
+            R.layout.fragment_create_group,
             container,
             false
         )
@@ -48,28 +54,18 @@ class UserFragment : Fragment(), UserListener, SimpleDataBoundItemListener, Valu
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userBinding.apply {
-            adapter = this@UserFragment.userAdapter
+            adapter = this@CreateGroupFragment.createGroupAdapter
+            listener = this@CreateGroupFragment
         }
-        referencecall = FirebaseDatabase.getInstance().getReference("call")
         reference = FirebaseDatabase.getInstance().getReference("user")
+        referenceGroupChat = FirebaseDatabase.getInstance().getReference("group_chat")
         reference?.addValueEventListener(this)
-    }
-
-    override fun onItemUserClick(item : User) {
-        findNavController().navigateWithAnim(UserFragmentDirections.openChatDetail(item))
-    }
-
-    override fun onVideoCallUser(item: User) {
-        val db = Firebase.database
-        db.reference.child("call").child(viewModel.selfUser?.keyId ?: "").
-        child(item.keyId ?: "")
     }
 
     override fun onCancelled(error: DatabaseError) {
     }
 
     override fun onDataChange(snapshot: DataSnapshot) {
-        val arr = mutableListOf<User>()
         snapshot.children.forEach {
             val user = it.getValue(User::class.java)
             if (viewModel.selfUser?.keyId != it.key) {
@@ -79,6 +75,23 @@ class UserFragment : Fragment(), UserListener, SimpleDataBoundItemListener, Valu
                 }
             }
         }
-        userAdapter.setData(arr)
+        createGroupAdapter.setData(arr)
+    }
+
+    override fun clickSelectUser(item: User) {
+        item.isSelected = item.isSelected != true
+        createGroupAdapter.notifyDataSetChanged()
+    }
+
+    override fun createGroupChat() {
+        arr.forEach {
+            if (it.isSelected == true) {
+                it.keyIdGroup = args.listGroup.toInt().plus(1).toString()
+                referenceGroupChat?.push()
+                referenceGroupChat?.child(it.keyIdGroup.toString())?.child(it.keyId.toString())?.setValue(it)
+            }
+        }
+        findNavController().navigateWithAnim(CreateGroupFragmentDirections.openGroupChatDetail())
+
     }
 }

@@ -33,7 +33,45 @@
         android:name="com.example.chatexample.ui.chat_detail.ChatDetailFragment">
 
         <argument android:name="user"
-            app:argType="com.example.chatexample.data.User"/>
+            app:argType="com.example.chatexample.data.User" />
+    </fragment>
+    <fragment android:id="@+id/groupChatFragment"
+        android:name="com.example.chatexample.ui.group.GroupChatFragment">
+
+        <action android:id="@+id/openGroupChatDetail"
+            app:destination="@+id/groupChatDetailFragment"/>
+
+        <action android:id="@+id/openCreateGroup"
+            app:destination="@id/createGroupFragment"/>
+
+    </fragment>
+    <fragment android:id="@+id/createGroupFragment"
+        android:name="com.example.chatexample.ui.create_group.CreateGroupFragment">
+
+        <action android:id="@+id/openGroupChatDetail"
+            app:destination="@+id/groupChatDetailFragment"/>
+
+        <argument android:name="listGroup"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/groupChatDetailFragment"
+        android:name="com.example.chatexample.ui.group_chat_detail.GroupChatDetailFragment"/>
+
+    <fragment android:id="@+id/listCallFragment"
+        android:name="com.example.chatexample.ui.list_call.ListCallFragment">
+
+        <action
+            android:id="@+id/openVideoCall"
+            app:destination="@id/videoCallFragment"/>
+    </fragment>
+
+    <fragment android:id="@+id/videoCallFragment"
+        android:name="com.example.chatexample.ui.videoCall.VideoCallFragment">
+
+        <argument android:name="user"
+            app:argType="com.example.chatexample.data.User" />
     </fragment>
 
 </navigation>

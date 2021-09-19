@@ -64,7 +64,8 @@ class EditProfileFragment : Fragment(), EditProfileListener, ValueEventListener 
             username = viewModel.username,
             password = viewModel.password,
             email = viewModel.email,
-            keyId = viewModel.user?.keyId
+            keyId = viewModel.user?.keyId,
+            keyIdGroup = viewModel.user?.keyIdGroup
         )
         viewModel.saveInfo(user)
         reference?.child(viewModel.user?.keyId.toString())?.setValue(user)

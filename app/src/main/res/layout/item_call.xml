@@ -10,14 +10,14 @@
             type="com.example.chatexample.data.User" />
         <variable
             name="listener"
-            type="com.example.chatexample.ui.user.UserListener" />
+            type="com.example.chatexample.ui.list_call.ListCallListener" />
     </data>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:onClick="@{v -> listener.onItemUserClick(item)}"
+        android:onClick="@{v -> listener.openVideoCallUser(item)}"
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -42,6 +42,5 @@
             android:src="@drawable/ic_baseline_call_24"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="156dp"/>
-
     </LinearLayout>
 </layout>

@@ -10,14 +10,15 @@
             type="com.example.chatexample.data.User" />
         <variable
             name="listener"
-            type="com.example.chatexample.ui.user.UserListener" />
+            type="com.example.chatexample.ui.create_group.CreateGroupListener" />
     </data>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@{item.isSelected() ? @color/colorPrimary : @color/textColorWhite}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:onClick="@{v -> listener.onItemUserClick(item)}"
+        android:onClick="@{v -> listener.clickSelectUser(item)}"
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -35,13 +36,6 @@
             android:text="@{item.username}"
             android:textStyle="bold"
             tools:text="Captain America" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_call_24"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="156dp"/>
 
     </LinearLayout>
 </layout>
